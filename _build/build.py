@@ -253,6 +253,14 @@ def href(from_path, to_path):
 def asset(from_path, a):
     return posixpath.relpath("assets/" + a, posixpath.dirname(from_path) or ".")
 
+_VER = {}
+def vasset(from_path, a):
+    """Asset URL with a content hash (?v=...), so browsers fetch the new file as soon as it changes after a deploy."""
+    if a not in _VER:
+        import hashlib
+        _VER[a] = hashlib.md5(open(os.path.join(ROOT, "assets", a), "rb").read()).hexdigest()[:8]
+    return asset(from_path, a) + "?v=" + _VER[a]
+
 PATH = {
  "home": "index.html",
  "services": "services/index.html",
@@ -517,7 +525,7 @@ def page(path, *, title, desc, body, active=None, crumbs=None, schema=None, noin
 <link rel="preload" href="{asset(path, "fonts/anton-latin-400-normal.woff2")}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{asset(path, "fonts/barlow-latin-400-normal.woff2")}" as="font" type="font/woff2" crossorigin>
 {head_extra}
-<link rel="stylesheet" href="{asset(path, "css/main.css")}">
+<link rel="stylesheet" href="{vasset(path, "css/main.css")}">
 <style>:root{{--accent:{ACCENT};--accent-2:{ACCENT_2};--accent-paper:{ACCENT_ON_PAPER}}}</style>
 {boot}
 {ld}
@@ -531,7 +539,7 @@ def page(path, *, title, desc, body, active=None, crumbs=None, schema=None, noin
 {body}
 </main>
 {footer_html(path)}
-<script src="{asset(path, "js/main.js")}" defer></script>
+<script src="{vasset(path, "js/main.js")}" defer></script>
 {scripts_extra}
 </body>
 </html>
@@ -981,8 +989,8 @@ def build_estimate():
 {tool}
 {explain}
 {cta_band(here, title="Ready for the real number?", text="Book an inspection and we'll confirm the price in a written, itemized quote.")}'''
-    head = f'<link rel="stylesheet" href="{asset(here, "vendor/leaflet/leaflet.css")}">'
-    scripts = f'<script src="{asset(here, "vendor/leaflet/leaflet.js")}" defer></script>\n<script src="{asset(here, "js/estimate.js")}" defer></script>'
+    head = f'<link rel="stylesheet" href="{vasset(here, "vendor/leaflet/leaflet.css")}">'
+    scripts = f'<script src="{vasset(here, "vendor/leaflet/leaflet.js")}" defer></script>\n<script src="{vasset(here, "js/estimate.js")}" defer></script>'
     schema = [{"@type": "WebApplication", "name": f"{BIZ} Instant Roof Estimate", "url": url_of(here), "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any",
                "offers": {"@type": "Offer", "price": "0", "priceCurrency": e.get("currency", "CAD")}, "provider": business_ref()}]
     page(here, title="Instant Roof Estimate: Satellite Roof Price", desc=f"Get a ballpark roof replacement price in a minute: enter your address, check your roof on satellite imagery and pick the pitch.",
@@ -1053,7 +1061,7 @@ def build_404():
         if to.endswith("index.html"): return BASE + to[:-len("index.html")]
         return BASE + to
     href = abs_href
-    asset = lambda _f, a: BASE + "assets/" + a
+    asset = lambda _f, a: BASE + "assets/" + a  # vasset() builds on asset(), so the 404 gets root-based versioned URLs
     links = "".join(f'<li><a href="{abs_href(None, svc_path(s["slug"]))}">{s["name"]}</a></li>' for s in SERVICES[:10])
     content = f'''<section class="notfound"><div class="wrap">
 <p class="notfound__code" aria-hidden="true">404</p>

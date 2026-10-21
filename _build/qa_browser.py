@@ -201,11 +201,15 @@ async def main():
             ctx, pg = await fresh(w, 900)
             await pg.goto(B + "/services/#x", wait_until="load"); await pg.wait_for_timeout(800)
             bad = []
-            for i, sel in enumerate(("#mega-services", "#mega-areas")):
-                await pg.hover(f".nav__item[data-dropdown]:nth-of-type({i + 1}) button"); await pg.wait_for_timeout(650)
-                r = await pg.evaluate(f"(()=>{{const r=document.querySelector('{sel}').getBoundingClientRect();return [r.left,r.right,document.documentElement.clientWidth,document.documentElement.scrollWidth]}})()")
-                if r[0] < 0 or r[1] > r[2] or r[3] > r[2]: bad.append(f"{sel} {r}")
-            rec(not bad, f"Desktop {w}px: Services and Service Areas dropdowns open fully inside the window", "; ".join(bad))
+            # open, close and reopen repeatedly (including mid-animation) the way a visitor's mouse does
+            for rnd in range(3):
+                for i, sel in enumerate(("#mega-services", "#mega-areas")):
+                    await pg.hover(f".nav__item[data-dropdown]:nth-of-type({i + 1}) button"); await pg.wait_for_timeout(650 if rnd != 1 else 120)
+                    if rnd == 1: await pg.wait_for_timeout(600)
+                    r = await pg.evaluate(f"(()=>{{const r=document.querySelector('{sel}').getBoundingClientRect();return [Math.round(r.left),Math.round(r.right),document.documentElement.clientWidth,document.documentElement.scrollWidth]}})()")
+                    if r[0] < 0 or r[1] > r[2] or r[3] > r[2]: bad.append(f"round {rnd} {sel} {r}")
+                    await pg.mouse.move(w / 2, 700); await pg.wait_for_timeout(250 if rnd == 1 else 700)
+            rec(not bad, f"Desktop {w}px: Services and Service Areas dropdowns open fully inside the window, every time they are reopened", "; ".join(bad))
             await ctx.close()
         # 4 contact form validation
         ctx, pg = await fresh()

@@ -224,11 +224,14 @@
     /* keep the dropdown inside the window: it is centred under its menu item, then nudged so it never hangs off either edge */
     var fit = function () {
       if (!panel) return;
-      panel.style.setProperty("--shift", "0px");
-      var r = panel.getBoundingClientRect(), W = document.documentElement.clientWidth, pad = 16, shift = 0;
-      if (r.left < pad) shift = pad - r.left; else if (r.right > W - pad) shift = (W - pad) - r.right;
+      /* calculated from the menu item's position and the panel's width (neither is affected by the panel's slide
+         animation), so reopening the menu mid-animation can never measure a stale position */
+      var ir = it.getBoundingClientRect(), W = document.documentElement.clientWidth, pad = 16;
+      var width = panel.offsetWidth, left = ir.left + ir.width / 2 - width / 2, shift = 0;
+      if (left < pad) shift = pad - left; else if (left + width > W - pad) shift = (W - pad) - (left + width);
       panel.style.setProperty("--shift", Math.round(shift) + "px");
     };
+    window.addEventListener("resize", fit);
     var open = function () { clearTimeout(timer); closeAll(it); fit(); it.classList.add("is-open"); btn.setAttribute("aria-expanded", "true"); };
     var close = function () { timer = setTimeout(function () { it.classList.remove("is-open"); btn.setAttribute("aria-expanded", "false"); }, 160); };
     btn.addEventListener("click", function () { it.classList.contains("is-open") ? (it.classList.remove("is-open"), btn.setAttribute("aria-expanded", "false")) : open(); });
