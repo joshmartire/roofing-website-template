@@ -732,3 +732,5 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 /* inner-page intro paragraph: slide only, never transparent, so it can paint immediately (it is often the LCP element on phones) */
 .page-hero .lead.intro-fade{opacity:1}
 @media (max-width:760px){.hero .intro-fade{opacity:1}}
+.est-map__hint{transition:opacity .4s}.est-map__hint.is-fading{opacity:0}
+@media (max-width:620px){.est-map__hint{font-size:.85rem;padding:8px 12px;bottom:76px}}

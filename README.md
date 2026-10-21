@@ -4,7 +4,7 @@ A reusable, production-ready static website for roofing companies, built to the 
 
 Static HTML, CSS and JavaScript. No frameworks and no tracking. Fonts, Leaflet and the hero video are self-hosted. The only third-party requests are the estimate's map services, which run only after a visitor searches an address.
 
-Demo: `rankboss-roofing.pages.dev` (noindexed). Suggested outreach subdomain: `roofingdemo.getrankboss.com`.
+Demo: https://roofingdemo.getrankboss.com (also `rankboss-roofing.pages.dev`), noindexed. Cloudflare Pages project `rankboss-roofing` redeploys on every push to `main`.
 
 ## What's in it (67 pages)
 

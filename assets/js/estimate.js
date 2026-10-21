@@ -130,6 +130,7 @@
     map.attributionControl.setPrefix('<a href="https://leafletjs.com/">Leaflet</a>');
     vtxLayer = L.layerGroup().addTo(map);
     map.on("click", onMapClick);
+    map.on("mousedown touchstart dragstart zoomstart", function () { if (!S.drawing) hideHint(); });
     mapEl.addEventListener("focusin", function () { map.scrollWheelZoom.enable(); });
     map.on("focus click", function () { map.scrollWheelZoom.enable(); });
     root.classList.add("has-map");
@@ -409,7 +410,13 @@
     else startDraw();
     update();
   });
-  function showHint(t) { hint.textContent = t; hint.hidden = false; }
+  var hintTimer = null;
+  function showHint(t) {
+    hint.textContent = t; hint.hidden = false; hint.classList.remove("is-fading");
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(hideHint, 7000);   // tips get out of the way so they never cover the outline for long
+  }
+  function hideHint() { if (hint.hidden) return; hint.classList.add("is-fading"); setTimeout(function () { hint.hidden = true; hint.classList.remove("is-fading"); }, 400); }
 
   /* ---------------- manual size ---------------- */
   function openManual() { var d = root.querySelector(".est-manual"); if (d) d.open = true; }
