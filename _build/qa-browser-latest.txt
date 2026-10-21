@@ -1,13 +1,13 @@
 PASS Home (desktop): opening animation covers the screen, is aria-hidden and has nothing focusable
-PASS Home (desktop): animation removes itself within 4.2 s (3496 ms)
+PASS Home (desktop): animation removes itself within 4.2 s (3516 ms)
 PASS Home (desktop): hero visible and quote button clickable after the animation
-PASS Home (desktop): CLS 0.006 (<0.1), LCP 276 ms locally (<2500)
+PASS Home (desktop): CLS 0.006 (<0.1), LCP 308 ms locally (<2500)
 PASS Home (desktop): next page in the same session does not replay the animation
 PASS Home (desktop): no JavaScript errors
 PASS Home (mobile): opening animation covers the screen, is aria-hidden and has nothing focusable
-PASS Home (mobile): animation removes itself within 4.2 s (3455 ms)
+PASS Home (mobile): animation removes itself within 4.2 s (3467 ms)
 PASS Home (mobile): hero visible and quote button clickable after the animation
-PASS Home (mobile): CLS 0.052 (<0.1), LCP 192 ms locally (<2500)
+PASS Home (mobile): CLS 0.052 (<0.1), LCP 176 ms locally (<2500)
 PASS Home (mobile): next page in the same session does not replay the animation
 PASS Home (mobile): no JavaScript errors
 PASS First landing on a service + city page (mobile) plays the opening animation
@@ -16,16 +16,20 @@ PASS Service page (mobile): CLS 0.019, LCP 100 ms locally
 PASS After landing on a service page (mobile), the home page does not replay it
 PASS First landing on a service + city page (desktop) plays the opening animation
 PASS Service page (desktop): headline is opaque from first paint (animation never hides text from crawlers)
-PASS Service page (desktop): CLS 0.006, LCP 156 ms locally
+PASS Service page (desktop): CLS 0.006, LCP 148 ms locally
 PASS After landing on a service page (desktop), the home page does not replay it
 PASS A URL with a #hash skips the opening animation
 PASS 404 page never shows the opening animation
 PASS Reduced motion: no opening animation, no hero video, roof sequence shown static
-PASS A tap skips the opening animation (gone at 1654 ms)
+PASS A tap skips the opening animation (gone at 1682 ms)
 PASS Hero video loads after first paint (desktop file), muted and inline
 PASS Roof anatomy sequence: all layers placed and last step active at the end of the pinned scroll
 PASS Services menu opens with the keyboard and Escape closes it, returning focus
 PASS Mobile menu opens
+PASS Desktop 1062px: Services and Service Areas dropdowns open fully inside the window
+PASS Desktop 1280px: Services and Service Areas dropdowns open fully inside the window
+PASS Desktop 1440px: Services and Service Areas dropdowns open fully inside the window
+PASS Desktop 1920px: Services and Service Areas dropdowns open fully inside the window
 PASS Quote form blocks an empty submission with field errors and a summary
 PASS Estimate (desktop): no third-party requests until the visitor searches
 PASS Estimate (desktop): address suggestions by keyboard, outline decoded from the vector tile, price $13,900–$17,200 within 4% of the exact outline (tile precision ~0.45 m)
@@ -57,4 +61,4 @@ PASS axe-core WCAG 2.1 A/AA + best practice on /faq/: 0 violations
 PASS axe-core WCAG 2.1 A/AA + best practice on /privacy-policy.html: 0 violations
 PASS axe-core WCAG 2.1 A/AA + best practice on /404.html: 0 violations
 
-58 passed, 0 failed
+62 passed, 0 failed

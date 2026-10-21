@@ -196,6 +196,17 @@ async def main():
         rec(await pg.evaluate("document.getElementById('mobile-nav').classList.contains('is-open')"), "Mobile menu opens")
         await ctx.close()
 
+        # 3b dropdown menus stay inside the window at common desktop widths
+        for w in (1062, 1280, 1440, 1920):
+            ctx, pg = await fresh(w, 900)
+            await pg.goto(B + "/services/#x", wait_until="load"); await pg.wait_for_timeout(800)
+            bad = []
+            for i, sel in enumerate(("#mega-services", "#mega-areas")):
+                await pg.hover(f".nav__item[data-dropdown]:nth-of-type({i + 1}) button"); await pg.wait_for_timeout(650)
+                r = await pg.evaluate(f"(()=>{{const r=document.querySelector('{sel}').getBoundingClientRect();return [r.left,r.right,document.documentElement.clientWidth,document.documentElement.scrollWidth]}})()")
+                if r[0] < 0 or r[1] > r[2] or r[3] > r[2]: bad.append(f"{sel} {r}")
+            rec(not bad, f"Desktop {w}px: Services and Service Areas dropdowns open fully inside the window", "; ".join(bad))
+            await ctx.close()
         # 4 contact form validation
         ctx, pg = await fresh()
         await pg.goto(B + "/contact/#f", wait_until="load")

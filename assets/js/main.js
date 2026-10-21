@@ -220,7 +220,16 @@
   items.forEach(function (it) {
     var btn = it.querySelector("button.nav__link");
     var timer;
-    var open = function () { clearTimeout(timer); closeAll(it); it.classList.add("is-open"); btn.setAttribute("aria-expanded", "true"); };
+    var panel = it.querySelector(".mega");
+    /* keep the dropdown inside the window: it is centred under its menu item, then nudged so it never hangs off either edge */
+    var fit = function () {
+      if (!panel) return;
+      panel.style.setProperty("--shift", "0px");
+      var r = panel.getBoundingClientRect(), W = document.documentElement.clientWidth, pad = 16, shift = 0;
+      if (r.left < pad) shift = pad - r.left; else if (r.right > W - pad) shift = (W - pad) - r.right;
+      panel.style.setProperty("--shift", Math.round(shift) + "px");
+    };
+    var open = function () { clearTimeout(timer); closeAll(it); fit(); it.classList.add("is-open"); btn.setAttribute("aria-expanded", "true"); };
     var close = function () { timer = setTimeout(function () { it.classList.remove("is-open"); btn.setAttribute("aria-expanded", "false"); }, 160); };
     btn.addEventListener("click", function () { it.classList.contains("is-open") ? (it.classList.remove("is-open"), btn.setAttribute("aria-expanded", "false")) : open(); });
     if (window.matchMedia("(hover: hover)").matches) { it.addEventListener("mouseenter", open); it.addEventListener("mouseleave", close); }

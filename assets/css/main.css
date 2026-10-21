@@ -123,9 +123,9 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 .nav__phone{display:flex;align-items:center;gap:8px;font-family:var(--label);font-weight:600;letter-spacing:.08em;font-size:1.02rem;text-decoration:none;padding:0 6px;white-space:nowrap}
 .nav__phone svg{width:18px;height:18px;color:var(--accent)}
 
-.mega{position:absolute;top:100%;left:50%;width:min(980px,calc(100vw - 48px));transform:translate(-50%,12px);background:rgba(17,18,21,.97);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);border-top:2px solid var(--accent);padding:30px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px;opacity:0;visibility:hidden;transition:opacity .3s,transform .45s var(--ease),visibility 0s .3s;box-shadow:0 40px 80px rgba(0,0,0,.5)}
+.mega{position:absolute;top:100%;left:50%;width:min(980px,calc(100vw - 48px));transform:translate(calc(-50% + var(--shift,0px)),12px);background:rgba(17,18,21,.97);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);border-top:2px solid var(--accent);padding:30px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px;opacity:0;visibility:hidden;transition:opacity .3s,transform .45s var(--ease),visibility 0s .3s;box-shadow:0 40px 80px rgba(0,0,0,.5)}
 .mega--small{width:320px;grid-template-columns:1fr}
-.nav__item.is-open>.mega{opacity:1;visibility:visible;transform:translate(-50%,0);transition:opacity .3s,transform .45s var(--ease),visibility 0s}
+.nav__item.is-open>.mega{opacity:1;visibility:visible;transform:translate(calc(-50% + var(--shift,0px)),0);transition:opacity .3s,transform .45s var(--ease),visibility 0s}
 .mega__title{font-family:var(--label);font-weight:600;font-size:.82rem;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--line)}
 .mega ul{list-style:none}
 .mega a{display:flex;align-items:center;gap:10px;padding:7px 0;text-decoration:none;color:var(--muted);font-weight:600;font-size:.98rem;transition:color .25s,transform .35s var(--ease)}
