@@ -211,7 +211,7 @@ def roof_layers_svg(label):
         x, y = _pt(u, v); y += dy
         callouts += (f'<g class="anat-tag" data-layer="{n_}"><circle cx="{x:.1f}" cy="{y:.1f}" r="4"/>'
                      f'<path d="M{x:.1f} {y:.1f}L{x + 40:.1f} {y - 46:.1f}H{x + 60:.1f}"/><text x="{x + 66:.1f}" y="{y - 41:.1f}">0{n_} {t.upper()}</text></g>')
-    return (f'<svg class="anatomy" viewBox="0 0 700 500" role="img" aria-label="{html.escape(label)}">'
+    return (f'<svg class="anatomy" viewBox="20 130 820 420" role="img" aria-label="{html.escape(label)}">'
             f'{"".join(g)}{callouts}</svg>')
 
 # ------------------------------------------------------------------ opening animation (shingle courses + name)

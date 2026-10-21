@@ -103,7 +103,7 @@
   document.querySelectorAll("[data-stagger]").forEach(function (group) {
     Array.prototype.forEach.call(group.querySelectorAll("[data-reveal]"), function (el, i) { el.style.setProperty("--i", i % 8); });
   });
-  var revealEls = document.querySelectorAll("[data-reveal], .sequence .anatomy");
+  var revealEls = document.querySelectorAll("[data-reveal]");
   if ("IntersectionObserver" in window && !reduced) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
@@ -172,7 +172,7 @@
         var ws = el.querySelectorAll(".fw"), n = Math.round(p * ws.length);
         for (var i = 0; i < ws.length; i++) ws[i].classList.toggle("on", i < n);
       });
-      if (seq && window.innerWidth > 900) {
+      if (seq) {   /* desktop: side by side; phones: roof pinned above one step card (see main.css) */
         var r = seq.getBoundingClientRect();
         var p = Math.max(0, Math.min(1, -r.top / (r.height - vh)));
         var stage = Math.min(nSteps - 1, Math.floor(p * nSteps * 0.999));

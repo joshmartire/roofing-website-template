@@ -183,6 +183,22 @@ async def main():
         await pg.evaluate(f"scrollTo(0,{y})"); await pg.wait_for_timeout(500)
         st = await pg.evaluate("({l:[...document.querySelectorAll('.anatomy .layer')].map(e=>+getComputedStyle(e).getPropertyValue('--l')),act:[...document.querySelectorAll('.sequence__step')].findIndex(e=>e.classList.contains('is-active'))})")
         rec(all(x >= 0.99 for x in st["l"]) and st["act"] == len(st["l"]) - 1, "Roof anatomy sequence: all layers placed and last step active at the end of the pinned scroll", str(st))
+        # phones: the same pinned build, stacked (roof above one step card), checked through the scroll
+        for w2, h2 in ((375, 667), (390, 844)):
+            c2 = await br.new_context(viewport={"width": w2, "height": h2}, is_mobile=True, has_touch=True)
+            p2 = await c2.new_page()
+            await p2.goto(B + "/#x", wait_until="load"); await p2.wait_for_timeout(600)
+            await p2.evaluate("document.documentElement.style.scrollBehavior='auto'")
+            seen, ok = [], True
+            for frac in (0.05, 0.3, 0.5, 0.75, 0.99):
+                yy = await p2.evaluate(f"(()=>{{const s=document.querySelector('.sequence');return s.offsetTop+(s.offsetHeight-innerHeight)*{frac}}})()")
+                await p2.evaluate(f"scrollTo(0,{yy})"); await p2.wait_for_timeout(600)
+                q = await p2.evaluate("""(()=>{const s=document.querySelector('.sequence');const a=s.querySelector('.anatomy').getBoundingClientRect();const c=s.querySelector('.sequence__step.is-active').getBoundingClientRect();const cb=document.querySelector('.callbar').getBoundingClientRect();
+                  return {act:[...s.querySelectorAll('.sequence__step')].findIndex(e=>e.classList.contains('is-active')),pinned:Math.abs(s.querySelector('.sequence__sticky').getBoundingClientRect().top)<2,
+                  inside:a.left>=0&&a.right<=innerWidth&&c.bottom<=cb.top+1&&document.documentElement.scrollWidth<=innerWidth}})()""")
+                seen.append(q["act"]); ok = ok and q["pinned"] and q["inside"]
+            rec(ok and seen == sorted(seen) and seen[0] == 0 and seen[-1] == 4, f"Phone {w2}x{h2}: roof anatomy pins and builds step by step (steps {seen}), roof and text fully on screen above the call bar")
+            await c2.close()
         await pg.evaluate("scrollTo(0,0)"); await pg.wait_for_timeout(300)
         await pg.focus(".nav__item[data-dropdown] button"); await pg.keyboard.press("Enter"); await pg.wait_for_timeout(400)
         op = await pg.evaluate("document.querySelector('.nav__item[data-dropdown]').classList.contains('is-open')")
