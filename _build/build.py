@@ -419,7 +419,6 @@ def footer_html(here):
 {cols}
 <div class="footer__col"><h2>Service Areas</h2><ul>{areas}</ul><h2 class="mt-2">Company</h2><ul>{company}</ul></div>
 </div>
-<p class="footer__huge" aria-hidden="true">{html.escape(BIZ.split(" ")[0])}</p>
 <div class="footer__bottom">
 <p>© {date.today().year} {html.escape(CFG["legal_name"])}. All rights reserved.</p>
 <ul><li><a href="{href(here, PATH["privacy"])}">Privacy Policy</a></li><li><a href="{href(here, PATH["terms"])}">Terms &amp; Conditions</a></li><li><a href="{href(here, PATH["cookies"])}">Cookie Policy</a></li></ul>
